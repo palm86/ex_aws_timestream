@@ -5,7 +5,7 @@ defmodule ExAws.Timestream.MixProject do
   @service "timestream"
   @url "https://github.com/mike-foucault/ex_aws_#{@service}"
   @name __MODULE__ |> Module.split() |> Enum.take(2) |> Enum.join(".")
-  
+
   def project do
     [
       app: :ex_aws_timestream,
@@ -43,7 +43,7 @@ defmodule ExAws.Timestream.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [      
+    [
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},

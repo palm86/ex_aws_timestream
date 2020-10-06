@@ -13,8 +13,23 @@ defmodule ExAws.Timestream.Write.Record do
             time: nil,
             time_unit: nil
 
+  @type record :: %ExAws.Timestream.Write.Record{}
+  @type dimension :: %ExAws.Timestream.Write.Dimension{}
+
+  @doc "Create a new Record struct"
+  @type new_opts :: %{
+          dimensions: [dimension],
+          measure_name: binary,
+          measure_value: binary,
+          measure_value_type: binary,
+          time: binary,
+          time_unit: binary
+        }
+  @spec new(new_opts :: new_opts) :: record
   def new(opts \\ []), do: struct!(Record, opts)
 
+  @doc "Add a dimension to a record struct"
+  @spec add_dimension(record :: record, dimension :: dimension) :: record
   def add_dimension(%Record{dimensions: dimensions} = record, dimension),
     do: %{record | dimensions: dimensions ++ [dimension]}
 end

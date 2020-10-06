@@ -7,13 +7,13 @@ defmodule ExAws.Timestream.Query do
   """
 
   @doc "DescribeEndpoints returns a list of available endpoints to make Timestream API calls against"
-  @spec describe_endpoints() :: ExAws.Operation.JSON.t
+  @spec describe_endpoints() :: ExAws.Operation.JSON.t()
   def describe_endpoints do
     request(:describe_endpoints, %{})
   end
 
   @doc "Cancels a query that has been issued."
-  @spec cancel_query(query_id :: binary) :: ExAws.Operation.JSON.t
+  @spec cancel_query(query_id :: binary) :: ExAws.Operation.JSON.t()
   def cancel_query(query_id) do
     request(:describe_endpoints, %{
       "QueryId" => query_id
@@ -22,12 +22,12 @@ defmodule ExAws.Timestream.Query do
 
   @doc "Query is a synchronous operation that enables you to execute a query."
   @type query_opts :: [
-    {:max_rows, pos_integer} |
-    {:next_token, binary} |
-    {:client_token, binary}
-  ]
-  @spec query(query_string :: binary) :: ExAws.Operation.JSON.t
-  @spec query(query_string :: binary, query_opts :: query_opts) :: ExAws.Operation.JSON.t
+          {:max_rows, pos_integer}
+          | {:next_token, binary}
+          | {:client_token, binary}
+        ]
+  @spec query(query_string :: binary) :: ExAws.Operation.JSON.t()
+  @spec query(query_string :: binary, query_opts :: query_opts) :: ExAws.Operation.JSON.t()
   def query(query_string, opts \\ []) do
     request(:query, %{
       "ClientToken" => Keyword.get(opts, :client_token, nil),

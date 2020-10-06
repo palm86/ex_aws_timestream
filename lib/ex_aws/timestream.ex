@@ -31,6 +31,7 @@ defmodule ExAws.Timestream do
   defdelegate describe_table(database_name, table_name), to: Write
   @doc "Returns a list of your Timestream tables."
   defdelegate list_tables(opts \\ []), to: Write
+
   @doc "Modifies the retention duration of the memory store and magnetic store for your Timestream table."
   defdelegate update_table(database_name, table_name, retention_properties), to: Write
   @doc "List all tags on a Timestream resource."
