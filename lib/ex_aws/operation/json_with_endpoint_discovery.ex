@@ -1,4 +1,6 @@
 defmodule ExAws.Operation.JsonWithEndpointDiscovery do
+  @moduledoc false
+  
   defstruct service: nil,
             request_operation: nil,
             endpoint_operation: nil

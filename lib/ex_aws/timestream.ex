@@ -9,48 +9,48 @@ defmodule ExAws.Timestream do
   ## Amazon Timestream Write
   ######################
 
-  @doc "DescribeEndpoints returns a list of available endpoints to make Timestream Write API calls against"
+  @doc deletegate_to: {ExAws.Timestream.Write, :describe_endpoints, 0}
   defdelegate describe_write_endpoints, to: Write, as: :describe_endpoints
 
-  @doc "Creates a new Timestream database"
+  @doc deletegate_to: {ExAws.Timestream.Write, :create_database, 2}
   defdelegate create_database(database_name, opts \\ []), to: Write
-  @doc "Deletes a given Timestream database."
+  @doc deletegate_to: {ExAws.Timestream.Write, :delete_database, 1}
   defdelegate delete_database(database_name), to: Write
-  @doc "Returns information about the database."
+  @doc deletegate_to: {ExAws.Timestream.Write, :describe_database, 1}
   defdelegate describe_database(database_name), to: Write
-  @doc "Returns a list of your Timestream databases."
+  @doc deletegate_to: {ExAws.Timestream.Write, :list_databases, 1}
   defdelegate list_databases(opts \\ []), to: Write
-  @doc "Modifies the KMS key for an existing database."
+  @doc deletegate_to: {ExAws.Timestream.Write, :update_database, 2}
   defdelegate update_database(database_name, km_key_id), to: Write
 
-  @doc "The CreateTable operation adds a new table to an existing database in your account."
+  @doc deletegate_to: {ExAws.Timestream.Write, :create_table, 3}
   defdelegate create_table(database_name, table_name, opts \\ []), to: Write
-  @doc "Deletes a given Timestream table."
+  @doc deletegate_to: {ExAws.Timestream.Write, :delete_table, 2}
   defdelegate delete_table(database_name, table_name), to: Write
-  @doc "Returns information about the table."
+  @doc deletegate_to: {ExAws.Timestream.Write, :describe_table, 2}
   defdelegate describe_table(database_name, table_name), to: Write
-  @doc "Returns a list of your Timestream tables."
+  @doc deletegate_to: {ExAws.Timestream.Write, :list_tables, 1}
   defdelegate list_tables(opts \\ []), to: Write
 
-  @doc "Modifies the retention duration of the memory store and magnetic store for your Timestream table."
+  @doc deletegate_to: {ExAws.Timestream.Write, :update_table, 3}
   defdelegate update_table(database_name, table_name, retention_properties), to: Write
-  @doc "List all tags on a Timestream resource."
+  @doc deletegate_to: {ExAws.Timestream.Write, :list_tags_for_resource, 1}
   defdelegate list_tags_for_resource(resource_arn), to: Write
-  @doc "Associate a set of tags with a Timestream resource."
+  @doc deletegate_to: {ExAws.Timestream.Write, :tag_resource, 2}
   defdelegate tag_resource(resource_arn, tags), to: Write
-  @doc "Removes the association of tags from a Timestream resource."
+  @doc deletegate_to: {ExAws.Timestream.Write, :untag_resource, 2}
   defdelegate untag_resource(resource_arn, tag_keys), to: Write
 
-  @doc "The WriteRecords operation enables you to write your time series data into Timestream."
+  @doc deletegate_to: {ExAws.Timestream.Write, :write_records, 4}
   defdelegate write_records(records, database_name, table_name, opts \\ []), to: Write
 
   ## Amazon Timestream Query
   ######################
 
-  @doc "DescribeEndpoints returns a list of available endpoints to make Timestream Query API calls against"
+  @doc deletegate_to: {ExAws.Timestream.Query, :describe_query_endpoints, 0}
   defdelegate describe_query_endpoints, to: Query, as: :describe_endpoints
-  @doc "Cancels a query that has been issued."
+  @doc deletegate_to: {ExAws.Timestream.Query, :cancel_query, 1}
   defdelegate cancel_query(query_id), to: Query
-  @doc "Query is a synchronous operation that enables you to execute a query."
+  @doc deletegate_to: {ExAws.Timestream.Query, :query, 2}
   defdelegate query(query_string, opts \\ []), to: Query
 end

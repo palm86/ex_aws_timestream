@@ -250,9 +250,9 @@ defmodule ExAws.Timestream.Write do
     |> dynamic_endpoint_request()
   end
 
-  def build_record(record) when is_nil(record), do: nil
+  defp build_record(record) when is_nil(record), do: nil
 
-  def build_record(record) do
+  defp build_record(record) do
     record
     |> Map.from_struct()
     |> Map.update!(:dimensions, fn current_dimensions ->
