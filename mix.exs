@@ -1,7 +1,7 @@
 defmodule ExAws.Timestream.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
   @service "timestream"
   @url "https://github.com/mike-foucault/ex_aws_#{@service}"
   @name __MODULE__ |> Module.split() |> Enum.take(2) |> Enum.join(".")

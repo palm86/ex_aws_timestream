@@ -1,19 +1,25 @@
 # ExAws.Timestream
 
-## Installation
+## Dev notes
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ex_aws_timestream` to your list of dependencies in `mix.exs`:
+Timestream service is not yet supported by ex_aws.
+[A pull request is currently opened ](https://github.com/ex-aws/ex_aws/pull/716) in order to add valid configurations to ex_aws.
+
+Meanwhile, you can explore all timestream API methods by adding the following configuration :
 
 ```elixir
-def deps do
+defp deps do
   [
-    {:ex_aws_timestream, "~> 0.1.0"}
+    {:ex_aws_timestream, "~> 0.2.0"},
+    {:ex_aws, git: "https://github.com/mike-foucault/ex_aws.git", branch: "feat/add-timestream-support", override: true},
+    {:jason, "~> 1.2"},
+    {:hackney, "~> 1.16"},
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ex_aws_timestream](https://hexdocs.pm/ex_aws_timestream).
+Then 
 
+```
+AWS_ACCESS_KEY_ID="..." AWS_SECRET_ACCESS_KEY="..." iex -S mix
+```
