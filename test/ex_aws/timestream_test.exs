@@ -11,16 +11,18 @@ defmodule ExAws.TimestreamTest do
 
   describe "Amazon Timestream Write actions" do
     test "#describe_endpoints" do
-      assert Timestream.describe_write_endpoints().data == %{}
+      op = Timestream.describe_write_endpoints()
+      assert op.data == %{}
 
-      assert Enum.sort(Timestream.describe_write_endpoints().headers) == [
-               {"content-type", "application/x-amz-json-1.0"},
-               {"x-amz-target", "Timestream_20181101.DescribeEndpoints"}
-             ]
+      assert Enum.sort(op.headers) == describe_endpoint_headers()
     end
 
     test "#create_database/1" do
-      assert Timestream.create_database("foo_bar").data == %{
+      op = Timestream.create_database("foo_bar")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "foo_bar",
                "KmsKeyId" => nil,
                "Tags" => []
@@ -28,10 +30,15 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#create_database/2" do
-      assert Timestream.create_database("foo_bar",
-               tags: [{"foo", "bar"}],
-               km_key_id: "fake_km_key_id"
-             ).data == %{
+      op =
+        Timestream.create_database("foo_bar",
+          tags: [{"foo", "bar"}],
+          km_key_id: "fake_km_key_id"
+        )
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "foo_bar",
                "KmsKeyId" => "fake_km_key_id",
                "Tags" => [%{"Key" => "foo", "Value" => "bar"}]
@@ -39,33 +46,60 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#delete_database/1" do
-      assert Timestream.delete_database("foo_bar").data == %{"DatabaseName" => "foo_bar"}
+      op = Timestream.delete_database("foo_bar")
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+      assert op.request_operation.data == %{"DatabaseName" => "foo_bar"}
     end
 
     test "#describe_database/1" do
-      assert Timestream.describe_database("foo_bar").data == %{"DatabaseName" => "foo_bar"}
+      op = Timestream.describe_database("foo_bar")
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+      assert op.request_operation.data == %{"DatabaseName" => "foo_bar"}
     end
 
     test "#list_databases/0" do
-      assert Timestream.list_databases().data == %{"MaxResults" => nil, "NextToken" => nil}
-    end
+      op = Timestream.list_databases()
 
-    test "#list_databases/1" do
-      assert Timestream.list_databases(max_results: 123, next_token: "foo_bar").data == %{
-               "MaxResults" => 123,
-               "NextToken" => "foo_bar"
+      assert Enum.sort(op.endpoint_operation.headers) ==
+               describe_endpoint_headers()
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
+               "MaxResults" => nil,
+               "NextToken" => nil
              }
     end
 
+    test "#list_databases/1" do
+      op = Timestream.list_databases(max_results: 123, next_token: "foo_bar")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data ==
+               %{
+                 "MaxResults" => 123,
+                 "NextToken" => "foo_bar"
+               }
+    end
+
     test "#update_database/2" do
-      assert Timestream.update_database("database_name", "km_key_id").data == %{
+      op = Timestream.update_database("database_name", "km_key_id")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "KmsKeyId" => "km_key_id"
              }
     end
 
     test "#create_table/2" do
-      assert Timestream.create_table("database_name", "table_name").data == %{
+      op = Timestream.create_table("database_name", "table_name")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "RetentionProperties" => nil,
                "TableName" => "table_name",
@@ -79,10 +113,15 @@ defmodule ExAws.TimestreamTest do
         memory_retention: "memory_retention"
       }
 
-      assert Timestream.create_table("database_name", "table_name",
-               tags: [{"foo", "bar"}],
-               retention_properties: retention_properties
-             ).data == %{
+      op =
+        Timestream.create_table("database_name", "table_name",
+          tags: [{"foo", "bar"}],
+          retention_properties: retention_properties
+        )
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "RetentionProperties" => %{
                  "MagneticStoreRetentionPeriodInDays" => "magnetic_retention",
@@ -94,21 +133,33 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#delete_table/2" do
-      assert Timestream.delete_table("database_name", "table_name").data == %{
+      op = Timestream.delete_table("database_name", "table_name")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "TableName" => "table_name"
              }
     end
 
     test "#describe_table/2" do
-      assert Timestream.describe_table("database_name", "table_name").data == %{
+      op = Timestream.describe_table("database_name", "table_name")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "TableName" => "table_name"
              }
     end
 
     test "#list_tables/0" do
-      assert Timestream.list_tables().data == %{
+      op = Timestream.list_tables()
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => nil,
                "MaxResults" => nil,
                "NextToken" => nil
@@ -116,11 +167,16 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#list_tables/1" do
-      assert Timestream.list_tables(
-               database_name: "database_name",
-               max_results: 123,
-               next_token: "foo_bar"
-             ).data == %{
+      op =
+        Timestream.list_tables(
+          database_name: "database_name",
+          max_results: 123,
+          next_token: "foo_bar"
+        )
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "DatabaseName" => "database_name",
                "MaxResults" => 123,
                "NextToken" => "foo_bar"
@@ -133,7 +189,11 @@ defmodule ExAws.TimestreamTest do
         memory_retention: "memory_retention"
       }
 
-      assert Timestream.update_table("database_name", "table_name", retention_properties).data ==
+      op = Timestream.update_table("database_name", "table_name", retention_properties)
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data ==
                %{
                  "DatabaseName" => "database_name",
                  "RetentionProperties" => %{
@@ -145,20 +205,32 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#list_tags_for_resource/1" do
-      assert Timestream.list_tags_for_resource("resource_arn").data == %{
+      op = Timestream.list_tags_for_resource("resource_arn")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "ResourceARN" => "resource_arn"
              }
     end
 
-    test "#tag_resource/é" do
-      assert Timestream.tag_resource("resource_arn", [{"foo", "bar"}]).data == %{
+    test "#tag_resource/2" do
+      op = Timestream.tag_resource("resource_arn", [{"foo", "bar"}])
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "ResourceARN" => "resource_arn",
                "Tags" => [%{"Key" => "foo", "Value" => "bar"}]
              }
     end
 
     test "#untag_resource/2" do
-      assert Timestream.untag_resource("resource_arn", ["foo", "bar"]).data == %{
+      op = Timestream.untag_resource("resource_arn", ["foo", "bar"])
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "ResourceARN" => "resource_arn",
                "TagKeys" => ["foo", "bar"]
              }
@@ -179,7 +251,11 @@ defmodule ExAws.TimestreamTest do
         |> Record.add_dimension(Dimension.new("fake_name", "fake_value", "dimension_value_type"))
       ]
 
-      assert Timestream.write_records(records, "database_name", "table_name").data == %{
+      op = Timestream.write_records(records, "database_name", "table_name")
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "CommonAttributes" => nil,
                "DatabaseName" => "database_name",
                "Records" => [
@@ -241,9 +317,14 @@ defmodule ExAws.TimestreamTest do
         |> Record.add_dimension(Dimension.new("fake_name", "fake_value"))
         |> Record.add_dimension(Dimension.new("fake_name", "fake_value", "dimension_value_type"))
 
-      assert Timestream.write_records(records, "database_name", "table_name",
-               common_attributes: common_attributes
-             ).data == %{
+      op =
+        Timestream.write_records(records, "database_name", "table_name",
+          common_attributes: common_attributes
+        )
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "CommonAttributes" => %{
                  "Dimensions" => [
                    %{"DimensionValueType" => nil, "Name" => "fake_name", "Value" => "fake_value"},
@@ -302,20 +383,23 @@ defmodule ExAws.TimestreamTest do
 
   describe "Amazon Timestream Query actions" do
     test "#describe_endpoints" do
-      assert Timestream.describe_query_endpoints().data == %{}
+      op = Timestream.describe_query_endpoints()
+      assert op.data == %{}
 
-      assert Enum.sort(Timestream.describe_query_endpoints().headers) == [
-               {"content-type", "application/x-amz-json-1.0"},
-               {"x-amz-target", "Timestream_20181101.DescribeEndpoints"}
-             ]
+      assert Enum.sort(op.headers) == describe_endpoint_headers()
     end
 
     test "#cancel_query/1" do
-      assert Timestream.cancel_query("query_id").data == %{"QueryId" => "query_id"}
+      op = Timestream.cancel_query("query_id")
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+      assert op.request_operation.data == %{"QueryId" => "query_id"}
     end
 
     test "#query/1" do
-      assert Timestream.query("query_string").data == %{
+      op = Timestream.query("query_string")
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "ClientToken" => nil,
                "MaxRows" => nil,
                "NextToken" => nil,
@@ -324,16 +408,29 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#query/2" do
-      assert Timestream.query("query_string",
-               client_token: "client_token",
-               max_rows: 123,
-               next_token: "next_token"
-             ).data == %{
+      op =
+        Timestream.query("query_string",
+          client_token: "client_token",
+          max_rows: 123,
+          next_token: "next_token"
+        )
+
+      assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
+
+      assert op.request_operation.data == %{
                "ClientToken" => "client_token",
                "MaxRows" => 123,
                "NextToken" => "next_token",
                "QueryString" => "query_string"
              }
     end
+  end
+
+  defp describe_endpoint_headers do
+    [
+      {"content-type", "application/x-amz-json-1.0"},
+      {"x-amz-target", "Timestream_20181101.DescribeEndpoints"}
+    ]
+    |> Enum.sort()
   end
 end

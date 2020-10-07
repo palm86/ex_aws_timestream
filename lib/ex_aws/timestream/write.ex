@@ -24,7 +24,7 @@ defmodule ExAws.Timestream.Write do
   @doc "DescribeEndpoints returns a list of available endpoints to make Timestream API calls against"
   @spec describe_endpoints() :: ExAws.Operation.JSON.t()
   def describe_endpoints do
-    request(:describe_endpoints, %{})
+    endpoint_operation()
   end
 
   ## Amazon Timestream Write : Database
@@ -44,6 +44,7 @@ defmodule ExAws.Timestream.Write do
       "KmsKeyId" => Keyword.get(opts, :km_key_id, nil),
       "Tags" => Keyword.get(opts, :tags, []) |> build_tags
     })
+    |> dynamic_endpoint_request()
   end
 
   defp build_tags(tags) do
@@ -60,12 +61,14 @@ defmodule ExAws.Timestream.Write do
   @spec delete_database(database_name :: database_name) :: ExAws.Operation.JSON.t()
   def delete_database(database_name) do
     request(:delete_database, %{"DatabaseName" => database_name})
+    |> dynamic_endpoint_request()
   end
 
   @doc "Returns information about the database."
   @spec describe_database(database_name :: database_name) :: ExAws.Operation.JSON.t()
   def describe_database(database_name) do
     request(:describe_database, %{"DatabaseName" => database_name})
+    |> dynamic_endpoint_request()
   end
 
   @doc "Returns a list of your Timestream databases."
@@ -80,6 +83,7 @@ defmodule ExAws.Timestream.Write do
       "MaxResults" => Keyword.get(opts, :max_results, nil),
       "NextToken" => Keyword.get(opts, :next_token, nil)
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Modifies the KMS key for an existing database."
@@ -90,6 +94,7 @@ defmodule ExAws.Timestream.Write do
       "DatabaseName" => database_name,
       "KmsKeyId" => km_key_id
     })
+    |> dynamic_endpoint_request()
   end
 
   ## Amazon Timestream Write : Table
@@ -115,6 +120,7 @@ defmodule ExAws.Timestream.Write do
       "RetentionProperties" =>
         Keyword.get(opts, :retention_properties, nil) |> build_retention_properties
     })
+    |> dynamic_endpoint_request()
   end
 
   defp build_retention_properties(retention_properties) when is_nil(retention_properties), do: nil
@@ -137,6 +143,7 @@ defmodule ExAws.Timestream.Write do
       "DatabaseName" => database_name,
       "TableName" => table_name
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Returns information about the table."
@@ -147,6 +154,7 @@ defmodule ExAws.Timestream.Write do
       "DatabaseName" => database_name,
       "TableName" => table_name
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Returns a list of your Timestream tables."
@@ -163,6 +171,7 @@ defmodule ExAws.Timestream.Write do
       "MaxResults" => Keyword.get(opts, :max_results, nil),
       "NextToken" => Keyword.get(opts, :next_token, nil)
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Modifies the retention duration of the memory store and magnetic store for your Timestream table."
@@ -177,6 +186,7 @@ defmodule ExAws.Timestream.Write do
       "TableName" => table_name,
       "RetentionProperties" => retention_properties |> build_retention_properties
     })
+    |> dynamic_endpoint_request()
   end
 
   ## Amazon Timestream Write : TagResource
@@ -188,6 +198,7 @@ defmodule ExAws.Timestream.Write do
     request(:list_tags_for_resource, %{
       "ResourceARN" => resource_arn
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Associate a set of tags with a Timestream resource."
@@ -197,6 +208,7 @@ defmodule ExAws.Timestream.Write do
       "ResourceARN" => resource_arn,
       "Tags" => tags |> build_tags
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Removes the association of tags from a Timestream resource."
@@ -207,6 +219,7 @@ defmodule ExAws.Timestream.Write do
       "ResourceARN" => resource_arn,
       "TagKeys" => tag_keys
     })
+    |> dynamic_endpoint_request()
   end
 
   ## Amazon Timestream Write : time series data
@@ -234,6 +247,7 @@ defmodule ExAws.Timestream.Write do
       "Records" => Enum.map(records, &build_record/1),
       "CommonAttributes" => Keyword.get(opts, :common_attributes, nil) |> build_record
     })
+    |> dynamic_endpoint_request()
   end
 
   def build_record(record) when is_nil(record), do: nil
@@ -253,19 +267,31 @@ defmodule ExAws.Timestream.Write do
   end
 
   defp request(op, data) do
-    operation =
-      op
-      |> Atom.to_string()
-      |> Macro.camelize()
-
-    %ExAws.Operation.JSON{
+    ExAws.Operation.JSON.new(
+      :ingest_timestream,
       http_method: :post,
-      service: :ingest_timestream,
       data: data,
       headers: [
-        {"x-amz-target", "#{@namespace}.#{operation}"},
+        {"x-amz-target", "#{@namespace}.#{format_operation_name(op)}"},
         {"content-type", "application/x-amz-json-1.0"}
       ]
-    }
+    )
+  end
+
+  defp format_operation_name(operation) do
+    operation
+    |> Atom.to_string()
+    |> Macro.camelize()
+  end
+
+  defp dynamic_endpoint_request(request_op, endpoint_op \\ endpoint_operation()) do
+    ExAws.Operation.JsonWithEndpointDiscovery.new(:ingest_timestream,
+      request_operation: request_op,
+      endpoint_operation: endpoint_op
+    )
+  end
+
+  defp endpoint_operation() do
+    request(:describe_endpoints, %{})
   end
 end

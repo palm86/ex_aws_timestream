@@ -9,7 +9,7 @@ defmodule ExAws.Timestream.Query do
   @doc "DescribeEndpoints returns a list of available endpoints to make Timestream API calls against"
   @spec describe_endpoints() :: ExAws.Operation.JSON.t()
   def describe_endpoints do
-    request(:describe_endpoints, %{})
+    endpoint_operation()
   end
 
   @doc "Cancels a query that has been issued."
@@ -18,6 +18,7 @@ defmodule ExAws.Timestream.Query do
     request(:describe_endpoints, %{
       "QueryId" => query_id
     })
+    |> dynamic_endpoint_request()
   end
 
   @doc "Query is a synchronous operation that enables you to execute a query."
@@ -35,6 +36,7 @@ defmodule ExAws.Timestream.Query do
       "NextToken" => Keyword.get(opts, :next_token, nil),
       "QueryString" => query_string
     })
+    |> dynamic_endpoint_request()
   end
 
   defp request(op, data) do
@@ -52,5 +54,16 @@ defmodule ExAws.Timestream.Query do
         {"content-type", "application/x-amz-json-1.0"}
       ]
     }
+  end
+
+  defp dynamic_endpoint_request(request_op, endpoint_op \\ endpoint_operation()) do
+    ExAws.Operation.JsonWithEndpointDiscovery.new(:query_timestream,
+      request_operation: request_op,
+      endpoint_operation: endpoint_op
+    )
+  end
+
+  defp endpoint_operation() do
+    request(:describe_endpoints, %{})
   end
 end
