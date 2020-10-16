@@ -35,8 +35,8 @@ defmodule ExAws.Timestream.Write do
 
   ## Options
 
-      * `km_key_id` - The KMS key for the database.
-      * `tags` - A list of tags to label the database.
+    * `km_key_id` - The KMS key for the database.
+    * `tags` - A list of tags to label the database.
 
   ## Examples - create_database/1
 
@@ -121,8 +121,8 @@ defmodule ExAws.Timestream.Write do
 
   ## Options
 
-      * `retention_properties` - The duration for which your time series data must be stored in the memory store and the magnetic store.
-      * `tags` - A list of tags to label the database.
+    * `retention_properties` - The duration for which your time series data must be stored in the memory store and the magnetic store.
+    * `tags` - A list of tags to label the database.
 
   ## Examples - create_table/2
 
@@ -134,7 +134,7 @@ defmodule ExAws.Timestream.Write do
       iex> retention_properties = %{ magnetic_retention: 1, memory_retention: 1 }
       iex> ExAws.Timestream.Write.create_table("database_name", "table_name",
       ...>   retention_properties: retention_properties, tags: [tag])
-  
+
   """
   @type create_table_opts :: [
           {:tags, tags}

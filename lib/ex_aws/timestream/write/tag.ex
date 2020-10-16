@@ -14,6 +14,6 @@ defmodule ExAws.Timestream.Write.Tag do
   defstruct key: nil, value: nil
 
   @doc "Create a new Tag struct"
-  @spec new(key :: binary, value :: binary) :: Tag.t
+  @spec new(key :: binary, value :: binary) :: Tag.t()
   def new(key, value), do: %Tag{key: key, value: value}
 end
