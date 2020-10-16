@@ -1,12 +1,15 @@
 defmodule ExAws.TimestreamTest do
   use ExUnit.Case
   doctest ExAws.Timestream
+  doctest ExAws.Timestream.Write
+  doctest ExAws.Timestream.Query
 
   alias ExAws.Timestream
 
   alias ExAws.Timestream.Write.{
     Dimension,
-    Record
+    Record,
+    Tag
   }
 
   describe "Amazon Timestream Write actions" do
@@ -32,7 +35,7 @@ defmodule ExAws.TimestreamTest do
     test "#create_database/2" do
       op =
         Timestream.create_database("foo_bar",
-          tags: [{"foo", "bar"}],
+          tags: [Tag.new("foo", "bar")],
           km_key_id: "fake_km_key_id"
         )
 
@@ -115,7 +118,7 @@ defmodule ExAws.TimestreamTest do
 
       op =
         Timestream.create_table("database_name", "table_name",
-          tags: [{"foo", "bar"}],
+          tags: [Tag.new("foo", "bar")],
           retention_properties: retention_properties
         )
 
@@ -215,7 +218,7 @@ defmodule ExAws.TimestreamTest do
     end
 
     test "#tag_resource/2" do
-      op = Timestream.tag_resource("resource_arn", [{"foo", "bar"}])
+      op = Timestream.tag_resource("resource_arn", [Tag.new("foo", "bar")])
 
       assert Enum.sort(op.endpoint_operation.headers) == describe_endpoint_headers()
 

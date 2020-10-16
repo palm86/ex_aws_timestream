@@ -10,7 +10,7 @@ defmodule ExAws.Timestream.Write do
   @type database_name :: binary
   @type table_name :: binary
 
-  @type tag :: {binary, binary}
+  @type tag :: ExAws.Timestream.Write.Tag.t()
   @type tags :: list(tag)
 
   @type retention_properties :: %{
@@ -30,7 +30,23 @@ defmodule ExAws.Timestream.Write do
   ## Amazon Timestream Write : Database
   ######################
 
-  @doc "Creates a new Timestream database"
+  @doc """
+  Creates a new Timestream database.
+
+  ## Options
+
+      * `km_key_id` - The KMS key for the database.
+      * `tags` - A list of tags to label the database.
+
+  ## Examples - create_database/1
+
+      iex> ExAws.Timestream.Write.create_database("database_name")
+
+  ## Examples - create_database/2
+
+      iex> tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
+      iex> ExAws.Timestream.Write.create_database("database_name", km_key_id: 1, tags: [tag])
+  """
   @type create_database_opts :: [
           {:km_key_id, pos_integer}
           | {:tags, tags}
@@ -49,7 +65,7 @@ defmodule ExAws.Timestream.Write do
 
   defp build_tags(tags) do
     tags
-    |> Enum.map(fn {key, value} ->
+    |> Enum.map(fn %ExAws.Timestream.Write.Tag{key: key, value: value} ->
       %{
         "Key" => key,
         "Value" => value
@@ -100,16 +116,35 @@ defmodule ExAws.Timestream.Write do
   ## Amazon Timestream Write : Table
   ######################
 
-  @doc "The CreateTable operation adds a new table to an existing database in your account."
+  @doc """
+  The CreateTable operation adds a new table to an existing database in your account.
+
+  ## Options
+
+      * `retention_properties` - The duration for which your time series data must be stored in the memory store and the magnetic store.
+      * `tags` - A list of tags to label the database.
+
+  ## Examples - create_table/2
+
+      iex> ExAws.Timestream.Write.create_table("database_name", "table_name")
+
+  ## Examples - create_table/3 
+
+      iex> tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
+      iex> retention_properties = %{ magnetic_retention: 1, memory_retention: 1 }
+      iex> ExAws.Timestream.Write.create_table("database_name", "table_name",
+      ...>   retention_properties: retention_properties, tags: [tag])
+  
+  """
   @type create_table_opts :: [
           {:tags, tags}
           | {:retention_properties, retention_properties}
         ]
-  @spec create_table(database_name :: database_name, km_key_id :: table_name) ::
+  @spec create_table(database_name :: database_name, table_name :: table_name) ::
           ExAws.Operation.JSON.t()
   @spec create_table(
           database_name :: database_name,
-          km_key_id :: table_name,
+          table_name :: table_name,
           create_table_opts :: create_table_opts
         ) :: ExAws.Operation.JSON.t()
   def create_table(database_name, table_name, opts \\ []) do
@@ -201,7 +236,18 @@ defmodule ExAws.Timestream.Write do
     |> dynamic_endpoint_request()
   end
 
-  @doc "Associate a set of tags with a Timestream resource."
+  @doc """
+  Associate a set of tags with a Timestream resource.
+
+  ## Examples
+
+      iex> tags = [
+      ...> ExAws.Timestream.Write.Tag.new("tag_key_1", "tag_value_1"),
+      ...> ExAws.Timestream.Write.Tag.new("tag_key_2", "tag_value_2")
+      ...> ]
+      iex> ExAws.Timestream.Write.tag_resource("resource_arn", tags)
+
+  """
   @spec tag_resource(resource_arn :: resource_arn, tags :: tags) :: ExAws.Operation.JSON.t()
   def tag_resource(resource_arn, tags) do
     request(:tag_resource, %{
