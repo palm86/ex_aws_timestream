@@ -1,4 +1,5 @@
 # ExAws.Timestream
+![CI](https://github.com/mike-foucault/ex_aws_timestream/workflows/CI/badge.svg)
 
 ## ExAws support notice
 
