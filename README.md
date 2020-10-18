@@ -1,5 +1,7 @@
 # ExAws.Timestream
 ![CI](https://github.com/mike-foucault/ex_aws_timestream/workflows/CI/badge.svg)
+[![Hex.pm](https://img.shields.io/hexpm/v/ex_aws_timestream.svg)](https://hex.pm/packages/ex_aws_timestream)
+[![Build Docs](https://img.shields.io/badge/hexdocs-release-blue.svg)](https://hexdocs.pm/ex_aws_timestream/ExAws.Timestream.html)
 
 ## ExAws support notice
 
