@@ -40,12 +40,12 @@ defmodule ExAws.Timestream.Write do
 
   ## Examples - create_database/1
 
-      iex> ExAws.Timestream.Write.create_database("database_name")
+      ExAws.Timestream.Write.create_database("database_name")
 
   ## Examples - create_database/2
 
-      iex> tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
-      iex> ExAws.Timestream.Write.create_database("database_name", km_key_id: 1, tags: [tag])
+      tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
+      ExAws.Timestream.Write.create_database("database_name", km_key_id: 1, tags: [tag])
   """
   @type create_database_opts :: [
           {:km_key_id, pos_integer}
@@ -127,15 +127,14 @@ defmodule ExAws.Timestream.Write do
 
   ## Examples - create_table/2
 
-      iex> ExAws.Timestream.Write.create_table("database_name", "table_name")
+      ExAws.Timestream.Write.create_table("database_name", "table_name")
 
   ## Examples - create_table/3 
 
-      iex> tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
-      iex> retention_properties = %{ magnetic_retention: 1, memory_retention: 1 }
-      iex> ExAws.Timestream.Write.create_table("database_name", "table_name",
-      ...>   retention_properties: retention_properties, tags: [tag])
-
+      tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
+      retention_properties = %{ magnetic_retention: 1, memory_retention: 1 }
+      ExAws.Timestream.Write.create_table("database_name", "table_name",
+        retention_properties: retention_properties, tags: [tag])
   """
   @type create_table_opts :: [
           {:tags, tags}
@@ -242,13 +241,11 @@ defmodule ExAws.Timestream.Write do
   Associate a set of tags with a Timestream resource.
 
   ## Examples
-
-      iex> tags = [
-      ...> ExAws.Timestream.Write.Tag.new("tag_key_1", "tag_value_1"),
-      ...> ExAws.Timestream.Write.Tag.new("tag_key_2", "tag_value_2")
-      ...> ]
-      iex> ExAws.Timestream.Write.tag_resource("resource_arn", tags)
-
+      tags = [
+        ExAws.Timestream.Write.Tag.new("tag_key_1", "tag_value_1"),
+        ExAws.Timestream.Write.Tag.new("tag_key_2", "tag_value_2")
+      ]
+      ExAws.Timestream.Write.tag_resource("resource_arn", tags)
   """
   @spec tag_resource(resource_arn :: resource_arn, tags :: tags) ::
           ExAws.Operation.EndpointDiscovery.t()
