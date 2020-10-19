@@ -1,4 +1,4 @@
-defmodule ExAws.Operation.JsonWithEndpointDiscovery do
+defmodule ExAws.Operation.EndpointDiscovery do
   @moduledoc false
 
   defstruct service: nil,
@@ -12,7 +12,7 @@ defmodule ExAws.Operation.JsonWithEndpointDiscovery do
   end
 end
 
-defimpl ExAws.Operation, for: ExAws.Operation.JsonWithEndpointDiscovery do
+defimpl ExAws.Operation, for: ExAws.Operation.EndpointDiscovery do
   @type response_t :: %{} | ExAws.Request.error_t()
 
   def perform(operation, config) do

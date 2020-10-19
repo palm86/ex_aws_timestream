@@ -51,7 +51,7 @@ defmodule ExAws.Timestream.Write do
           {:km_key_id, pos_integer}
           | {:tags, tags}
         ]
-  @spec create_database(database_name :: database_name) :: ExAws.Operation.JSON.t()
+  @spec create_database(database_name :: database_name) :: ExAws.Operation.EndpointDiscovery.t()
   @spec create_database(database_name :: database_name, opts :: create_database_opts) ::
           ExAws.Operation.JSON.t()
   def create_database(database_name, opts \\ []) do
@@ -74,14 +74,14 @@ defmodule ExAws.Timestream.Write do
   end
 
   @doc "Deletes a given Timestream database."
-  @spec delete_database(database_name :: database_name) :: ExAws.Operation.JSON.t()
+  @spec delete_database(database_name :: database_name) :: ExAws.Operation.EndpointDiscovery.t()
   def delete_database(database_name) do
     request(:delete_database, %{"DatabaseName" => database_name})
     |> dynamic_endpoint_request()
   end
 
   @doc "Returns information about the database."
-  @spec describe_database(database_name :: database_name) :: ExAws.Operation.JSON.t()
+  @spec describe_database(database_name :: database_name) :: ExAws.Operation.EndpointDiscovery.t()
   def describe_database(database_name) do
     request(:describe_database, %{"DatabaseName" => database_name})
     |> dynamic_endpoint_request()
@@ -92,8 +92,9 @@ defmodule ExAws.Timestream.Write do
           {:max_results, pos_integer}
           | {:next_token, binary}
         ]
-  @spec list_databases() :: ExAws.Operation.JSON.t()
-  @spec list_databases(list_databases_opts :: list_databases_opts) :: ExAws.Operation.JSON.t()
+  @spec list_databases() :: ExAws.Operation.EndpointDiscovery.t()
+  @spec list_databases(list_databases_opts :: list_databases_opts) ::
+          ExAws.Operation.EndpointDiscovery.t()
   def list_databases(opts \\ []) do
     request(:list_databases, %{
       "MaxResults" => Keyword.get(opts, :max_results, nil),
@@ -146,7 +147,7 @@ defmodule ExAws.Timestream.Write do
           database_name :: database_name,
           table_name :: table_name,
           create_table_opts :: create_table_opts
-        ) :: ExAws.Operation.JSON.t()
+        ) :: ExAws.Operation.EndpointDiscovery.t()
   def create_table(database_name, table_name, opts \\ []) do
     request(:create_table, %{
       "DatabaseName" => database_name,
@@ -198,8 +199,8 @@ defmodule ExAws.Timestream.Write do
           | {:max_results, pos_integer}
           | {:next_token, binary}
         ]
-  @spec list_tables() :: ExAws.Operation.JSON.t()
-  @spec list_tables(list_tables_opts) :: ExAws.Operation.JSON.t()
+  @spec list_tables() :: ExAws.Operation.EndpointDiscovery.t()
+  @spec list_tables(list_tables_opts) :: ExAws.Operation.EndpointDiscovery.t()
   def list_tables(opts \\ []) do
     request(:list_tables, %{
       "DatabaseName" => Keyword.get(opts, :database_name, nil),
@@ -214,7 +215,7 @@ defmodule ExAws.Timestream.Write do
           database_name :: database_name,
           km_key_id :: table_name,
           retention_properties :: retention_properties
-        ) :: ExAws.Operation.JSON.t()
+        ) :: ExAws.Operation.EndpointDiscovery.t()
   def update_table(database_name, table_name, retention_properties) do
     request(:update_table, %{
       "DatabaseName" => database_name,
@@ -228,7 +229,8 @@ defmodule ExAws.Timestream.Write do
   ######################
 
   @doc "List all tags on a Timestream resource."
-  @spec list_tags_for_resource(resource_arn :: resource_arn) :: ExAws.Operation.JSON.t()
+  @spec list_tags_for_resource(resource_arn :: resource_arn) ::
+          ExAws.Operation.EndpointDiscovery.t()
   def list_tags_for_resource(resource_arn) do
     request(:list_tags_for_resource, %{
       "ResourceARN" => resource_arn
@@ -248,7 +250,8 @@ defmodule ExAws.Timestream.Write do
       iex> ExAws.Timestream.Write.tag_resource("resource_arn", tags)
 
   """
-  @spec tag_resource(resource_arn :: resource_arn, tags :: tags) :: ExAws.Operation.JSON.t()
+  @spec tag_resource(resource_arn :: resource_arn, tags :: tags) ::
+          ExAws.Operation.EndpointDiscovery.t()
   def tag_resource(resource_arn, tags) do
     request(:tag_resource, %{
       "ResourceARN" => resource_arn,
@@ -279,13 +282,13 @@ defmodule ExAws.Timestream.Write do
           records :: [record],
           database_name :: database_name,
           table_name :: table_name
-        ) :: ExAws.Operation.JSON.t()
+        ) :: ExAws.Operation.EndpointDiscovery.t()
   @spec write_records(
           records :: [record],
           database_name :: database_name,
           table_name :: table_name,
           write_records :: write_records_opts
-        ) :: ExAws.Operation.JSON.t()
+        ) :: ExAws.Operation.EndpointDiscovery.t()
   def write_records(records, database_name, table_name, opts \\ []) do
     request(:write_records, %{
       "DatabaseName" => database_name,
@@ -331,7 +334,7 @@ defmodule ExAws.Timestream.Write do
   end
 
   defp dynamic_endpoint_request(request_op, endpoint_op \\ endpoint_operation()) do
-    ExAws.Operation.JsonWithEndpointDiscovery.new(:ingest_timestream,
+    ExAws.Operation.EndpointDiscovery.new(:ingest_timestream,
       request_operation: request_op,
       endpoint_operation: endpoint_op
     )

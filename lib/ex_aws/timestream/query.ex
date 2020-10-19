@@ -13,7 +13,7 @@ defmodule ExAws.Timestream.Query do
   end
 
   @doc "Cancels a query that has been issued."
-  @spec cancel_query(query_id :: binary) :: ExAws.Operation.JSON.t()
+  @spec cancel_query(query_id :: binary) :: ExAws.Operation.EndpointDiscovery.t()
   def cancel_query(query_id) do
     request(:describe_endpoints, %{
       "QueryId" => query_id
@@ -27,8 +27,9 @@ defmodule ExAws.Timestream.Query do
           | {:next_token, binary}
           | {:client_token, binary}
         ]
-  @spec query(query_string :: binary) :: ExAws.Operation.JSON.t()
-  @spec query(query_string :: binary, query_opts :: query_opts) :: ExAws.Operation.JSON.t()
+  @spec query(query_string :: binary) :: ExAws.Operation.EndpointDiscovery.t()
+  @spec query(query_string :: binary, query_opts :: query_opts) ::
+          ExAws.Operation.EndpointDiscovery.t()
   def query(query_string, opts \\ []) do
     request(:query, %{
       "ClientToken" => Keyword.get(opts, :client_token, nil),
@@ -57,7 +58,7 @@ defmodule ExAws.Timestream.Query do
   end
 
   defp dynamic_endpoint_request(request_op, endpoint_op \\ endpoint_operation()) do
-    ExAws.Operation.JsonWithEndpointDiscovery.new(:query_timestream,
+    ExAws.Operation.EndpointDiscovery.new(:query_timestream,
       request_operation: request_op,
       endpoint_operation: endpoint_op
     )
