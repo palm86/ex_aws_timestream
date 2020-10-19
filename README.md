@@ -1,29 +1,28 @@
 # ExAws.Timestream
-![CI](https://github.com/mike-foucault/ex_aws_timestream/workflows/CI/badge.svg)
+
+Service module for [https://github.com/ex-aws/ex_aws](https://github.com/ex-aws/ex_aws)
+
 [![Hex.pm](https://img.shields.io/hexpm/v/ex_aws_timestream.svg)](https://hex.pm/packages/ex_aws_timestream)
 [![Build Docs](https://img.shields.io/badge/hexdocs-release-blue.svg)](https://hexdocs.pm/ex_aws_timestream/ExAws.Timestream.html)
 
-## ExAws support notice
+## Installation
+
+The package can be installed by adding `ex_aws_timestream` to your list of dependencies in `mix.exs` along with `:ex_aws` and your preferred JSON codec / http client
 
 ```elixir
 defp deps do
   [
-    {:ex_aws_timestream, "~> 0.2.0"},
     {:ex_aws, "~> 2.1.6"},
+    {:ex_aws_timestream, "~> 0.4.0"},
     {:jason, "~> 1.2"},
     {:hackney, "~> 1.16"},
   ]
 end
 ```
 
-Then 
-
-```
-AWS_ACCESS_KEY_ID="..." AWS_SECRET_ACCESS_KEY="..." iex -S mix
-```
+## Example
 
 ```elixir
 ExAws.Timestream.list_databases
 |> ExAws.request
 ```
-
