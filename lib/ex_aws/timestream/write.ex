@@ -309,6 +309,8 @@ defmodule ExAws.Timestream.Write do
         |> camelize_keys(deep: false)
       end)
     end)
+    |> Enum.filter(fn {_k, v} -> not is_nil(v) end)
+    |> Map.new()
     |> camelize_keys(deep: false)
   end
 
