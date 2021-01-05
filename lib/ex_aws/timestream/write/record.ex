@@ -11,7 +11,8 @@ defmodule ExAws.Timestream.Write.Record do
             measure_value: nil,
             measure_value_type: nil,
             time: nil,
-            time_unit: nil
+            time_unit: nil,
+            version: nil
 
   @type record :: %ExAws.Timestream.Write.Record{}
   @type dimension :: %ExAws.Timestream.Write.Dimension{}

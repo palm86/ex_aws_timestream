@@ -246,7 +246,8 @@ defmodule ExAws.TimestreamTest do
           measure_value: "measure_value",
           measure_value_type: "measure_value_type",
           time: "time",
-          time_unit: "time_unit"
+          time_unit: "time_unit",
+          version: "version"
         )
         |> Record.add_dimension(Dimension.new("fake_name", "fake_value")),
         Record.new()
@@ -274,7 +275,8 @@ defmodule ExAws.TimestreamTest do
                    "MeasureValue" => "measure_value",
                    "MeasureValueType" => "measure_value_type",
                    "Time" => "time",
-                   "TimeUnit" => "time_unit"
+                   "TimeUnit" => "time_unit",
+                   "Version" => "version"
                  },
                  %{
                    "Dimensions" => [
@@ -288,12 +290,7 @@ defmodule ExAws.TimestreamTest do
                        "Name" => "fake_name",
                        "Value" => "fake_value"
                      }
-                   ],
-                   "MeasureName" => nil,
-                   "MeasureValue" => nil,
-                   "MeasureValueType" => nil,
-                   "Time" => nil,
-                   "TimeUnit" => nil
+                   ]
                  }
                ],
                "TableName" => "table_name"
@@ -336,12 +333,7 @@ defmodule ExAws.TimestreamTest do
                      "Name" => "fake_name",
                      "Value" => "fake_value"
                    }
-                 ],
-                 "MeasureName" => nil,
-                 "MeasureValue" => nil,
-                 "MeasureValueType" => nil,
-                 "Time" => nil,
-                 "TimeUnit" => nil
+                 ]
                },
                "DatabaseName" => "database_name",
                "Records" => [
@@ -371,12 +363,7 @@ defmodule ExAws.TimestreamTest do
                        "Name" => "fake_name",
                        "Value" => "fake_value"
                      }
-                   ],
-                   "MeasureName" => nil,
-                   "MeasureValue" => nil,
-                   "MeasureValueType" => nil,
-                   "Time" => nil,
-                   "TimeUnit" => nil
+                   ]
                  }
                ],
                "TableName" => "table_name"
