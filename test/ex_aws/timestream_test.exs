@@ -9,7 +9,8 @@ defmodule ExAws.TimestreamTest do
   alias ExAws.Timestream.Write.{
     Dimension,
     Record,
-    Tag
+    Tag,
+    MeasureValue
   }
 
   describe "Amazon Timestream Write actions" do
@@ -244,6 +245,7 @@ defmodule ExAws.TimestreamTest do
         Record.new(
           measure_name: "measure_name",
           measure_value: "measure_value",
+          measure_values: [],
           measure_value_type: "measure_value_type",
           time: "time",
           time_unit: "time_unit",
@@ -302,6 +304,10 @@ defmodule ExAws.TimestreamTest do
         Record.new(
           measure_name: "measure_name",
           measure_value: "measure_value",
+          measure_values: [
+            MeasureValue.new("fake_mv_name", "fake_mv_value", "fake_mv_type"),
+            MeasureValue.new("fake_mv_name_2", "fake_mv_value_2", "fake_mv_type_2")
+          ],
           measure_value_type: "measure_value_type",
           time: "time",
           time_unit: "time_unit"
@@ -347,6 +353,18 @@ defmodule ExAws.TimestreamTest do
                    ],
                    "MeasureName" => "measure_name",
                    "MeasureValue" => "measure_value",
+                   "MeasureValues" => [
+                     %{
+                       "Name" => "fake_mv_name",
+                       "Value" => "fake_mv_value",
+                       "Type" => "fake_mv_type"
+                     },
+                     %{
+                       "Name" => "fake_mv_name_2",
+                       "Value" => "fake_mv_value_2",
+                       "Type" => "fake_mv_type_2"
+                     }
+                   ],
                    "MeasureValueType" => "measure_value_type",
                    "Time" => "time",
                    "TimeUnit" => "time_unit"

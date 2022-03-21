@@ -9,6 +9,7 @@ defmodule ExAws.Timestream.Write.Record do
   defstruct dimensions: [],
             measure_name: nil,
             measure_value: nil,
+            measure_values: nil,
             measure_value_type: nil,
             time: nil,
             time_unit: nil,
@@ -16,12 +17,14 @@ defmodule ExAws.Timestream.Write.Record do
 
   @type record :: %ExAws.Timestream.Write.Record{}
   @type dimension :: %ExAws.Timestream.Write.Dimension{}
+  @type measure_value :: %ExAws.Timestream.Write.MeasureValue{}
 
   @doc "Create a new Record struct"
   @type new_opts :: %{
           dimensions: [dimension],
           measure_name: binary,
           measure_value: binary,
+          measure_values: [measure_value],
           measure_value_type: binary,
           time: binary,
           time_unit: binary

@@ -129,7 +129,7 @@ defmodule ExAws.Timestream.Write do
 
       ExAws.Timestream.Write.create_table("database_name", "table_name")
 
-  ## Examples - create_table/3 
+  ## Examples - create_table/3
 
       tag = ExAws.Timestream.Write.Tag.new("tag_key", "tag_value")
       retention_properties = %{ magnetic_retention: 1, memory_retention: 1 }
@@ -308,6 +308,18 @@ defmodule ExAws.Timestream.Write do
         |> Map.from_struct()
         |> camelize_keys(deep: false)
       end)
+    end)
+    |> Map.update!(:measure_values, fn current_measure_value ->
+      if current_measure_value == nil or current_measure_value == [] do
+        nil
+      else
+        current_measure_value
+        |> Enum.map(fn measure_value ->
+          measure_value
+          |> Map.from_struct()
+          |> camelize_keys(deep: false)
+        end)
+      end
     end)
     |> Enum.filter(fn {_k, v} -> not is_nil(v) end)
     |> Map.new()
