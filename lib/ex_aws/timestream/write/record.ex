@@ -20,15 +20,18 @@ defmodule ExAws.Timestream.Write.Record do
   @type measure_value :: %ExAws.Timestream.Write.MeasureValue{}
 
   @doc "Create a new Record struct"
-  @type new_opts :: %{
-          dimensions: [dimension],
-          measure_name: binary,
-          measure_value: binary,
-          measure_values: [measure_value],
-          measure_value_type: binary,
-          time: binary,
-          time_unit: binary
-        }
+  @type new_opts ::
+          %{
+            :dimensions => [dimension],
+            :measure_name => binary,
+            :measure_value => binary,
+            :measure_values => [measure_value],
+            :measure_value_type => binary,
+            :time => binary,
+            :time_unit => binary,
+            optional(:version) => integer
+          }
+          | keyword()
   @spec new(new_opts :: new_opts) :: record
   def new(opts \\ []), do: struct!(Record, opts)
 

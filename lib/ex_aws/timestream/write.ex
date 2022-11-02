@@ -51,8 +51,7 @@ defmodule ExAws.Timestream.Write do
           {:km_key_id, pos_integer}
           | {:tags, tags}
         ]
-  @spec create_database(database_name :: database_name) :: ExAws.Operation.EndpointDiscovery.t()
-  @spec create_database(database_name :: database_name, opts :: create_database_opts) ::
+  @spec create_database(database_name, opts :: create_database_opts) ::
           ExAws.Operation.JSON.t()
   def create_database(database_name, opts \\ []) do
     request(:create_database, %{
@@ -140,13 +139,8 @@ defmodule ExAws.Timestream.Write do
           {:tags, tags}
           | {:retention_properties, retention_properties}
         ]
-  @spec create_table(database_name :: database_name, table_name :: table_name) ::
-          ExAws.Operation.JSON.t()
-  @spec create_table(
-          database_name :: database_name,
-          table_name :: table_name,
-          create_table_opts :: create_table_opts
-        ) :: ExAws.Operation.EndpointDiscovery.t()
+  @spec create_table(database_name, table_name, create_table_opts) ::
+          ExAws.Operation.EndpointDiscovery.t()
   def create_table(database_name, table_name, opts \\ []) do
     request(:create_table, %{
       "DatabaseName" => database_name,
@@ -171,7 +165,7 @@ defmodule ExAws.Timestream.Write do
   end
 
   @doc "Deletes a given Timestream table."
-  @spec delete_table(database_name :: database_name, km_key_id :: table_name) ::
+  @spec delete_table(database_name, km_key_id :: table_name) ::
           ExAws.Operation.JSON.t()
   def delete_table(database_name, table_name) do
     request(:delete_table, %{
@@ -182,7 +176,7 @@ defmodule ExAws.Timestream.Write do
   end
 
   @doc "Returns information about the table."
-  @spec describe_table(database_name :: database_name, km_key_id :: table_name) ::
+  @spec describe_table(database_name, km_key_id :: table_name) ::
           ExAws.Operation.JSON.t()
   def describe_table(database_name, table_name) do
     request(:describe_table, %{
